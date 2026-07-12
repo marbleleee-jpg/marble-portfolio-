@@ -28,7 +28,7 @@ document.documentElement.classList.add('js');
 
 /* ---------- marquee ---------- */
 (function(){
-  const kw = ['BRAND PLANNING','AI CREATIVE','SHORT-FORM','D2C LAUNCH','WADIZ 411%','81만 VIEWS','PROMPT DIRECTION','COST −71%','CONTENT STRATEGY','GLOBAL COMM.'];
+  const kw = ['BRAND PLANNING','AI CREATIVE','SHORT-FORM','D2C LAUNCH','WADIZ 411%','89만 VIEWS','PROMPT DIRECTION','COST −71%','CONTENT STRATEGY','GLOBAL COMM.'];
   const row = document.getElementById('marquee');
   if(row){
     const make = () => kw.map(k=>`<span class="t">${k}</span>`).join('');
@@ -44,6 +44,7 @@ function countUp(el){
   const suf = el.dataset.suffix || '';
   const em = el.querySelector('em');
   const set = (txt) => { if(em) em.textContent = txt; else el.textContent = txt; };
+  set('0' + suf);
   const dur = 1500, t0 = performance.now();
   function tick(now){
     const p = Math.min(1, (now - t0) / dur);
@@ -114,6 +115,11 @@ const vData = {
     title: '파도 프로젝트 브랜드 필름',
     desc: '와디즈 펀딩 상세페이지와 연결되는 브랜드 무드 영상입니다. 다양한 체형의 여성이 수영복을 당당하게 입는 모습을 통해 Inclusive · Confident · Comfort 메시지를 전달했습니다. (브랜드 메시지 설계 · 영상 방향 기획 · 펀딩 콘텐츠 연계)',
     embed: 'https://www.youtube.com/embed/zLakX2Ij8bo?autoplay=1', wide: false
+  },
+  timerider: {
+    title: '타임라이더, 추억을 타는 시간여행',
+    desc: '경주월드 타임라이더를 매개로, 어린 시절 아빠와의 추억을 다시 마주하고 가족에게 마음을 전하는 1분 감성 숏폼입니다. 2026 경주월드 타임라이더 AI 숏폼 출품작. (콘셉트 기획 · 프롬프트 · 컷 구성 · 편집)',
+    embed: 'https://www.youtube.com/embed/N0_SnfqHhPE?autoplay=1', wide: false
   }
 };
 const lb = document.getElementById('lightbox');
@@ -125,7 +131,7 @@ function openLightbox(key){
   const d = vData[key];
   if(!d) return;
   lbVideo.className = 'lb-video' + (d.wide ? ' wide' : '');
-  lbVideo.innerHTML = `<iframe src="${d.embed}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+  lbVideo.innerHTML = `<iframe title="${d.title}" src="${d.embed}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
   lbTitle.textContent = d.title;
   lbDesc.textContent = d.desc;
   lb.classList.add('open');
@@ -142,3 +148,26 @@ document.querySelectorAll('.vid-card').forEach(card=>{
 document.getElementById('lbClose').addEventListener('click', closeLightbox);
 lb.addEventListener('click', (e)=>{ if(e.target === lb) closeLightbox(); });
 document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeLightbox(); });
+
+/* ---------- mobile nav (hamburger) ---------- */
+(function(){
+  const burger = document.getElementById('navBurger');
+  const mnav = document.getElementById('mnav');
+  if(!burger || !mnav) return;
+  function close(){ mnav.classList.remove('open'); burger.classList.remove('open'); burger.setAttribute('aria-expanded','false'); }
+  burger.addEventListener('click', ()=>{
+    const open = mnav.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  mnav.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') close(); });
+  window.addEventListener('resize', ()=>{ if(window.innerWidth > 760) close(); }, { passive:true });
+})();
+
+/* ---------- vid-card keyboard access ---------- */
+document.querySelectorAll('.vid-card').forEach(card=>{
+  card.addEventListener('keydown', e=>{
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openLightbox(card.dataset.video); }
+  });
+});

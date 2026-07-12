@@ -29,7 +29,7 @@ document.documentElement.classList.add('js');
 
 /* ---------- marquee ---------- */
 (function(){
-  const kw = ['BRAND PLANNING','AI CREATIVE','SHORT-FORM','D2C LAUNCH','WADIZ 411%','810K VIEWS','PROMPT DIRECTION','COST −71%','CONTENT STRATEGY','GLOBAL COMM.'];
+  const kw = ['BRAND PLANNING','AI CREATIVE','SHORT-FORM','D2C LAUNCH','WADIZ 411%','890K VIEWS','PROMPT DIRECTION','COST −71%','CONTENT STRATEGY','GLOBAL COMM.'];
   const row = document.getElementById('marquee');
   if(row){
     const make = () => kw.map(k=>`<span class="t">${k}</span>`).join('');
@@ -45,6 +45,7 @@ function countUp(el){
   const suf = el.dataset.suffix || '';
   const em = el.querySelector('em');
   const set = (txt) => { if(em) em.textContent = txt; else el.textContent = txt; };
+  set('0' + suf);
   const dur = 1500, t0 = performance.now();
   function tick(now){
     const p = Math.min(1, (now - t0) / dur);
@@ -115,6 +116,11 @@ const vData = {
     title: 'Pado Project Brand Film',
     desc: 'A brand mood film tied to the Wadiz funding page. Through women of diverse body types wearing swimwear with confidence, it delivers an Inclusive \u00b7 Confident \u00b7 Comfort message. (Brand message design \u00b7 Film direction \u00b7 Funding-content tie-in)',
     embed: 'https://www.youtube.com/embed/zLakX2Ij8bo?autoplay=1', wide: false
+  },
+  timerider: {
+    title: 'Time Rider — A Trip Through Memories',
+    desc: 'A 1-minute emotional AI short built around Gyeongju World\'s Time Rider ride — a man revisits childhood memories with his dad and reaches out to the family beside him today. Entry for the 2026 Gyeongju World Time Rider AI short-form contest. (Concept · prompting · shot composition · editing)',
+    embed: 'https://www.youtube.com/embed/N0_SnfqHhPE?autoplay=1', wide: false
   }
 };
 const lb = document.getElementById('lightbox');
@@ -126,7 +132,7 @@ function openLightbox(key){
   const d = vData[key];
   if(!d) return;
   lbVideo.className = 'lb-video' + (d.wide ? ' wide' : '');
-  lbVideo.innerHTML = `<iframe src="${d.embed}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+  lbVideo.innerHTML = `<iframe title="${d.title}" src="${d.embed}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
   lbTitle.textContent = d.title;
   lbDesc.textContent = d.desc;
   lb.classList.add('open');
@@ -143,3 +149,26 @@ document.querySelectorAll('.vid-card').forEach(card=>{
 document.getElementById('lbClose').addEventListener('click', closeLightbox);
 lb.addEventListener('click', (e)=>{ if(e.target === lb) closeLightbox(); });
 document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeLightbox(); });
+
+/* ---------- mobile nav (hamburger) ---------- */
+(function(){
+  const burger = document.getElementById('navBurger');
+  const mnav = document.getElementById('mnav');
+  if(!burger || !mnav) return;
+  function close(){ mnav.classList.remove('open'); burger.classList.remove('open'); burger.setAttribute('aria-expanded','false'); }
+  burger.addEventListener('click', ()=>{
+    const open = mnav.classList.toggle('open');
+    burger.classList.toggle('open', open);
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  mnav.querySelectorAll('a').forEach(a => a.addEventListener('click', close));
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') close(); });
+  window.addEventListener('resize', ()=>{ if(window.innerWidth > 760) close(); }, { passive:true });
+})();
+
+/* ---------- vid-card keyboard access ---------- */
+document.querySelectorAll('.vid-card').forEach(card=>{
+  card.addEventListener('keydown', e=>{
+    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openLightbox(card.dataset.video); }
+  });
+});
