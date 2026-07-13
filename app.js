@@ -171,3 +171,9 @@ document.querySelectorAll('.vid-card').forEach(card=>{
     if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); openLightbox(card.dataset.video); }
   });
 });
+
+
+/* ---------- detail-page bar charts ---------- */
+document.querySelectorAll('.bfill[data-w]').forEach(function(b){
+  setTimeout(function(){ b.style.width = b.dataset.w; }, 350);
+});
