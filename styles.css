@@ -594,3 +594,7 @@ footer .fm{font:400 13.5px/1 var(--lat);color:var(--muted-2);}
 /* 영상별 실제 쓰임 표기 */
 .vuse{display:inline-flex;align-items:center;gap:8px;font:500 13px/1.5 var(--kr);color:#6b5a4d;background:var(--paper-2);border:1px solid var(--line-2);border-radius:10px;padding:9px 13px;margin-bottom:14px;}
 .vuse b{font-weight:700;color:var(--clay);}
+
+/* vrow 안에 정지 이미지를 넣을 때 */
+.vrow .vframe.square{aspect-ratio:1/1;background:var(--paper-2);}
+.vrow .vframe img{width:100%;height:100%;object-fit:cover;display:block;}
