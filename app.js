@@ -28,7 +28,7 @@ document.documentElement.classList.add('js');
 
 /* ---------- marquee ---------- */
 (function(){
-  const kw = ['BRAND PLANNING','AI CREATIVE','SHORT-FORM','D2C LAUNCH','WADIZ 411%','89만 VIEWS','PROMPT DIRECTION','COST −71%','CONTENT STRATEGY','GLOBAL COMM.'];
+  const kw = ['BRAND PLANNING','AI CREATIVE','SHORT-FORM','D2C LAUNCH','WADIZ 411%','89만 VIEWS','PROMPT DIRECTION','COST −71%','IPM 6.0','CONTENT STRATEGY','GLOBAL COMM.'];
   const row = document.getElementById('marquee');
   if(row){
     const make = () => kw.map(k=>`<span class="t">${k}</span>`).join('');
@@ -49,7 +49,7 @@ function countUp(el){
   function tick(now){
     const p = Math.min(1, (now - t0) / dur);
     const e = 1 - Math.pow(1 - p, 3);
-    const val = decimals ? (to * e).toFixed(decimals) : Math.round(to * e);
+    const val = decimals ? (to * e).toFixed(decimals) : Math.round(to * e).toLocaleString('en-US');
     set(val + suf);
     if(p < 1) requestAnimationFrame(tick);
   }
@@ -177,3 +177,25 @@ document.querySelectorAll('.vid-card').forEach(card=>{
 document.querySelectorAll('.bfill[data-w]').forEach(function(b){
   setTimeout(function(){ b.style.width = b.dataset.w; }, 350);
 });
+
+/* ---------- local <video> cards: hover = muted preview, click = sound ---------- */
+(function(){
+  const boxes = Array.from(document.querySelectorAll('.vlocal, .uv'));
+  if(!boxes.length) return;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hint = (box, on) => { const h = box.querySelector('.vhint'); if(h) h.textContent = on ? '소리 끄기' : '소리 켜기'; };
+  boxes.forEach(box=>{
+    const v = box.querySelector('video'); if(!v) return;
+    box.addEventListener('mouseenter', ()=>{ if(reduce || box.classList.contains('is-sound')) return; v.muted = true; v.play().catch(()=>{}); });
+    const reset = () => { v.pause(); try{ v.currentTime = 0; v.load(); }catch(e){} };
+    box.addEventListener('mouseleave', ()=>{ if(box.classList.contains('is-sound')) return; reset(); });
+    box.addEventListener('click', ()=>{
+      const on = !box.classList.contains('is-sound');
+      boxes.forEach(b=>{ if(b!==box){ b.classList.remove('is-sound'); const o=b.querySelector('video'); if(o){ o.muted = true; o.pause(); } hint(b,false); } });
+      box.classList.toggle('is-sound', on);
+      v.muted = !on; hint(box, on);
+      if(on){ v.currentTime = 0; v.play().catch(()=>{}); } else { v.pause(); }
+    });
+    v.addEventListener('ended', ()=>{ box.classList.remove('is-sound'); v.muted = true; hint(box,false); reset(); });
+  });
+})();

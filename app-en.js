@@ -29,7 +29,7 @@ document.documentElement.classList.add('js');
 
 /* ---------- marquee ---------- */
 (function(){
-  const kw = ['BRAND PLANNING','AI CREATIVE','SHORT-FORM','D2C LAUNCH','WADIZ 411%','890K VIEWS','PROMPT DIRECTION','COST −71%','CONTENT STRATEGY','GLOBAL COMM.'];
+  const kw = ['BRAND PLANNING','AI CREATIVE','SHORT-FORM','D2C LAUNCH','WADIZ 411%','890K VIEWS','PROMPT DIRECTION','COST −71%','IPM 6.0','CONTENT STRATEGY','GLOBAL COMM.'];
   const row = document.getElementById('marquee');
   if(row){
     const make = () => kw.map(k=>`<span class="t">${k}</span>`).join('');
