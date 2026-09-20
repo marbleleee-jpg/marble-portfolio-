@@ -602,3 +602,4 @@ footer .fm{font:400 13.5px/1 var(--lat);color:var(--muted-2);}
 /* 4열 이미지 그리드 */
 .imgrid.g4{grid-template-columns:repeat(4,1fr);}
 @media(max-width:900px){.imgrid.g4{grid-template-columns:repeat(2,1fr);}}
+.pj-next.one{grid-template-columns:1fr;}
